@@ -9,3 +9,15 @@
   var testNodes = d3.selectAll(".test-node");
   var $testNodes = $(testNodes[0]);
   console.log($testNodes);
+  
+isfunction:
+  function isFunction(functionToCheck) {
+   var getType = {};
+   return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+  }
+  
+isObject:
+  if( (typeof A === "object") && (A !== null) )
+  {
+      alert("A is object");
+  }
