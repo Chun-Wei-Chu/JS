@@ -1,0 +1,11 @@
+完整內容: http://collaboradev.com/2014/03/18/d3-and-jquery-interoperability/
+常用:
+  //Converting from jQuery to D3
+  var $testNodes = $(".test-node");  //jquery
+  var testNodes = d3.selectAll( $testNodes.toArray() ); //d3
+  console.log(testNodes);
+  
+  //Converting from D3 to jQuery
+  var testNodes = d3.selectAll(".test-node");
+  var $testNodes = $(testNodes[0]);
+  console.log($testNodes);
