@@ -1,0 +1,33 @@
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.cookie.js"></script>
+<script type="text/javascript">
+	$(function(){
+		// 先判斷是否已有 cookie 值
+		// 如果沒有則詢問名字並建立一筆新的 cookie
+		if($.cookie("name")==null){
+			var _name = prompt("請問你的大名是？", "abgne.tw");
+			if(!!_name){
+				// 把 _name 跟 1 分別存在記錄中
+				$.cookie("name", _name);
+				$.cookie("count", 1);
+ 
+				$(".msg").html(_name + " 你是第一次拜訪本小站。");
+			}else{
+				$(".msg").html("連名字都不說，你也太低調了!");
+			}
+		}else{
+			// 取出記錄中的 name 跟 count
+			var _name = $.cookie("name");
+			var _count = $.cookie("count");
+ 
+			$(".msg").html(_name + " 你是第 " + (++_count) + " 次拜訪本小站。");
+ 
+			// 把加 1 之後的 count 寫回記錄中
+			$.cookie("count", _count);
+		}
+	});
+</script>
+ 
+<body>
+	<div class="msg"></div>
+</body>
