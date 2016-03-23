@@ -1,0 +1,97 @@
+<link href="http://code.jquery.com/ui/1.10.0/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+
+
+<div id="divProgress"></div>
+<div id="divBody">
+  <input type="button" id="btn" value="Click Here" />
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th>
+          Column1
+        </th>
+        <th>
+          Column2
+        </th>
+        <th>
+          Column3
+        </th>
+        <th>
+          Column4
+        </th>
+        <th>
+          Column5
+        </th>
+        <th>
+          Column6
+        </th>
+        <th>
+          Column7
+        </th>
+        <th>
+          Column8
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
+<style>
+  td,
+  th,
+  table {
+    border-color: black;
+    border-width: thin;
+    border-style: solid;
+    border-collapse: collapse;
+  }
+</style>
+
+<script>
+  var g_arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+  $("#btn").click(function() {
+
+    var i = 0,
+      Loop = 1000,
+      $progressBar = $("#divProgress"),
+      $body = $("#tbl tbody"),
+      requestAnimationFrame =
+      window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame,
+
+      doRequestFrame = function() {
+        if (i++ < Loop) {
+          $progressBar.progressbar("value", (i / Loop) * 100);
+
+          var $newRow = $("<tr>");
+          $.each(g_arr, function(index, val) {
+            $newRow.append($("<td>").append(val));
+          });
+          $body.append($newRow);
+
+          if (requestAnimationFrame) {
+            // hey browser, please call again doRequestFrame() when you are idle (before repaint)
+            requestAnimationFrame(doRequestFrame);
+          } else {
+            setTimeout(doRequestFrame, 1);
+          }
+        }
+      };
+
+    $("#tbl tbody td").remove();
+
+    $progressBar.progressbar({
+      value: 0
+    });
+
+    // hey browser, please call doRequestFrame() when you are idle (before repaint)
+    requestAnimationFrame ? requestAnimationFrame(doRequestFrame) : doRequestFrame();
+  });
+</script>
