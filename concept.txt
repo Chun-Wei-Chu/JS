@@ -22,10 +22,6 @@ isObject:
       alert("A is object");
   }
 
-取小數點後幾位
-  http://codex.wiki/post/121876-974
-  s.substring(0,s.indexOf(".") + 3);
-  ---------------------------------
-  var re = /([0-9]+.[0-9]{2})[0-9]*/;
-  aNew = a.replace(re,"$1");
-  
+判斷日期格式:
+  if(new Date(gte)!="Invalid Date")reutrn true;
+
