@@ -25,3 +25,6 @@ isObject:
 判斷日期格式:
   if(new Date(gte)!="Invalid Date")reutrn true;
 
+日期轉UTC
+  Date.UTC(year, month, day ...);//js 中轉出來的是以毫秒為單位，一般是以秒為單位，month 是從 0 開始鳥到爆
+
