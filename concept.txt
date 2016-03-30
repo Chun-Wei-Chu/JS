@@ -30,4 +30,4 @@ isObject:
 
 JQuery selector regex:
   ex:$([value*="someFilter"]) //搜尋"所有"element中value中含有"someFilter"
-  缺點，是找所有element而不能設前置範圍
+     $(#id [class="classname"][value*="someFilter"]) //多層 要記住最主要限定範圍和條件之間要加 空格 條件之間用[]隔開且緊聯
