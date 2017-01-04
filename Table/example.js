@@ -1,3 +1,33 @@
+var tabledata={
+	thead:["test", "test", "test", "test", "test", "test", "test", "test", "test", "test10", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test20", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test30", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test40", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test50", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test60"],
+	tbody:[
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+	]
+}
+
 buildTable(tabledata, "body");
 
 function buildTable(tabledata, target)
@@ -10,7 +40,7 @@ function buildTable(tabledata, target)
         setTimeout(
           function(){
             DivClassByFreq.html(
-              '<div><tr><div style="height:20px;"></div></tr><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"  onkeyup="ToDoScrollToSearch(event, this);"><button onclick="scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode);">搜尋</button></div></div></tr></div>'
+              '<div><tr><div style="height:20px;"></div></tr><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"  onkeyup="buildTable_ToDoScrollToSearch(event, this);"><button onclick="buildTable_scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode);">搜尋</button></div></div></tr></div>'
             );	
 
             //freq table's header
@@ -19,7 +49,7 @@ function buildTable(tabledata, target)
                 var tdLenArr = [];
                 var tdLenArr_total_length=20;
                 DivClassByFreq = $("<div></div>").appendTo(DivClassByFreq)
-                  .attr("class", "buildReplyTable_innerTable");
+                  .attr("class", "buildTable_innerTable");
 
                 var tmpTarget = $("<tr></tr>").appendTo(
 					$("<div></div>").appendTo(DivClassByFreq)
@@ -30,15 +60,15 @@ function buildTable(tabledata, target)
                 for(var j=0; j < tabledata.thead.length ; j++)
                 {
                   var tmpText = tabledata.thead[j];
-
-                  tmpTr.push('<td class="columnName" style="border:solid 1px #abc;text-align:center;word-break: keep-all;" colkey="'+j+'"><div style="width:'+(tmpText.length*10+20)+'px">'+tmpText+'</div></td>');
-                  tdLenArr.push(tmpText.length*10+20);
-                  tdLenArr_total_length+=tmpText.length*10+20;
+				  var field_maxlength = buildTable_getMaxLength(tmpText, tabledata.tbody, j);
+                  tmpTr.push('<td class="columnName" style="border:solid 1px #abc;text-align:center;word-break: keep-all;" colkey="'+j+'"><div style="width:'+field_maxlength+'px">'+tmpText+'</div></td>');
+                  tdLenArr.push(field_maxlength);
+                  tdLenArr_total_length+=field_maxlength;
                 }
 
                 DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px");
 
-                //加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildReplyTable_innerTable搜尋
+                //加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
                 window.addEventListener("resize", function() {
                   DivClassByFreq.width(Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length+5));
                 });
@@ -61,6 +91,18 @@ function buildTable(tabledata, target)
       }.call(this),0);
 }
 
+function buildTable_getMaxLength(thead, tbodys, fieldIndex)
+{
+	var tmpTBodyArr = [];
+	for(var i = 0; i < tbodys.length; i++)
+	{
+		tmpTBodyArr.push(tbodys[i][fieldIndex]);
+	}
+	var tmpArr = tmpTBodyArr.map(function(e){return JSON.stringify(e).length});
+	tmpArr.push(JSON.stringify(thead).length);
+	return Math.max.apply(null, tmpArr)*10+20;
+}
+
 /*一列一列畫*/
 //stick 相關是用來做效果的
 function buildTable_tbody(data, target, header, tdLenArr)
@@ -69,11 +111,11 @@ function buildTable_tbody(data, target, header, tdLenArr)
     body = target,  //記錄下來以免多次查詢，用一點記憶體換時間
     arrayTable=[];  //儲存所有已建好的資料<tr><td>data</td><tr>
 
-  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length+1)*40)+"px")).attr("style", "position:relative").attr("class", "buildReplyTable_tbody_scollerY");
+  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length+1)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
 
   /*建立scroller事件*/
-  buildReplyTable_scrollerSet(body, header.parent(), target, arrayTable);
+  buildTable_scrollerSet(body, header.parent(), target, arrayTable);
 
   var j = 0,
    Loop = data.length,
@@ -102,7 +144,7 @@ function buildTable_tbody(data, target, header, tdLenArr)
          }
 
          //$(target[0]).append('<tr stick="0">' + tmpTr.join('') + '</tr>');
-         arrayTable.push('<tr stick="0" onmouseover="buildReplyTable_onmouseover(this)" onmouseout="buildReplyTable_onmouseout(this)" onclick="buildReplyTable_onclick(this)">' + tmpTr.join('') + '</tr>');
+         arrayTable.push('<tr stick="0" onmouseover="buildTable_onmouseover(this)" onmouseout="buildTable_onmouseout(this)" onclick="buildTable_onclick(this)">' + tmpTr.join('') + '</tr>');
        }
 
        if (requestAnimationFrame) {
@@ -129,22 +171,22 @@ function buildTable_tbody(data, target, header, tdLenArr)
   requestAnimationFrame ? requestAnimationFrame(doRequestFrame) : doRequestFrame();
 }
 
-function buildReplyTable_onmouseover(tmp)
+function buildTable_onmouseover(tmp)
 {
   if(tmp.getAttribute('stick')==0)tmp.style.background='#cde';
 }
-function buildReplyTable_onmouseout(tmp)
+function buildTable_onmouseout(tmp)
 {
   if(tmp.getAttribute('stick')==0)tmp.style.background='';
 }
-function buildReplyTable_onclick(tmp)
+function buildTable_onclick(tmp)
 {
   tmp.setAttribute('stick', tmp.getAttribute('stick')^1);
 }
 
 /*配置scroller，將全螢幕模式和一般模式的scroller統一管理*/
 /*("scroller所在的element(會顯示的畫面)", "table header", "最內層可移動的空間", "資料table格式為[<tr><td>...</td>...</tr>, ..., <tr><td>...</td>...</tr>]的array")*/
-function buildReplyTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
+function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
 {
   var last_scollerY = 0,
     last_scollerX = 0;
@@ -192,14 +234,14 @@ function buildReplyTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
 }
 
 /************************ search bar 會自動跳到指定td *************************/
-function ToDoScrollToSearch(event, tmpThis)
+function buildTable_ToDoScrollToSearch(event, tmpThis)
 {
   if(event.keyCode == 13){
-       scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode)
+       buildTable_scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode)
    }
 }
 
-function scrollToSearch(str, target)
+function buildTable_scrollToSearch(str, target)
 {
   var divs = target.getElementsByClassName("columnName");
 
@@ -257,6 +299,6 @@ function scrollToSearch(str, target)
   {
     target.index = -1;
     $(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
-    scrollToSearch(str, target);
+    buildTable_scrollToSearch(str, target);
   }
 }
