@@ -93,14 +93,14 @@ function buildTable(tabledata, target)
 
 function buildTable_getMaxLength(thead, tbodys, fieldIndex)
 {
-	var tmpTBodyArr = [];
+	var max = 0;
 	for(var i = 0; i < tbodys.length; i++)
 	{
-		tmpTBodyArr.push(tbodys[i][fieldIndex]);
+		max = Math.max(max, JSON.stringify(tbodys[i][fieldIndex]).replace(/<.*>/ig, "").length);
 	}
-	var tmpArr = tmpTBodyArr.map(function(e){return JSON.stringify(e).length});
-	tmpArr.push(JSON.stringify(thead).length);
-	return Math.max.apply(null, tmpArr)*10+20;
+
+	max = Math.max(max, JSON.stringify(thead).replace(/<[^>]*>||<\/.*>||<.*\/>/ig, "").length);
+	return max*10+20;
 }
 
 /*一列一列畫*/
