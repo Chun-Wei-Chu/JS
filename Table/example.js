@@ -28,6 +28,24 @@ var tabledata={
 	]
 }
 
+tabledata = {};
+tabledata.thead = [];
+tabledata.tbody = [];
+
+for(var i = 0; i < 80; i++)
+{
+	var tmpBody = [];
+	for(var j = 0;j < 60; j++)
+	{
+		if(i == 0)
+		{
+			tabledata.thead.push("test"+ j );
+		}
+		tmpBody.push("<div style='color:red;'>heillo"+ j +"</div>");
+	}
+	tabledata.tbody.push(tmpBody);
+}
+
 buildTable(tabledata, "body");
 
 function buildTable(tabledata, target)
@@ -68,20 +86,21 @@ function buildTable(tabledata, target)
 
                 DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px");
 
+				tmpTarget.html(tmpTr.join(''));
+
+				/*動態調整table邊界 以避免高度過高問題*/
+				var tbodyheight=46*tabledata.tbody.length;
+				DivTbody = $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
+				
                 //加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
                 window.addEventListener("resize", function() {
                   DivClassByFreq.width(Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length+5));
+		DivTbody.height(Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight));
                 });
 
                 setTimeout(
                   function(){
-                    tmpTarget.html(tmpTr.join(''));
-
-                    /*動態調整table邊界 以避免高度過高問題*/
-                    var tbodyheight=46*tabledata.tbody.length;
-                    tbodyheight = Math.min(tbodyheight, ($(this.target).height()/2));
-
-                    setTimeout(buildTable_tbody(tabledata.tbody, $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+tbodyheight+"px;"), tmpTarget, tdLenArr), 0);
+                    setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr), 0);
                   }.call(this),0);
 
               }.call(this) ,0);
@@ -98,11 +117,10 @@ function buildTable_getMaxLength(thead, tbodys, fieldIndex)
 	{
 		max = Math.max(max, JSON.stringify(tbodys[i][fieldIndex]).replace(/<.*>/ig, "").length);
 	}
-
+	
 	max = Math.max(max, JSON.stringify(thead).replace(/<[^>]*>||<\/.*>||<.*\/>/ig, "").length);
 	return max*10+20;
 }
-
 /*一列一列畫*/
 //stick 相關是用來做效果的
 function buildTable_tbody(data, target, header, tdLenArr)
@@ -133,7 +151,7 @@ function buildTable_tbody(data, target, header, tdLenArr)
         var tmpTr = [];
         for (var k = 0; k < data[j].length; k++) {
           var s = (data[j][k] == null ? "null" : data[j][k]);
-          var output = (s!="null"?Math.round(parseFloat(("" + s))*100)/100:(`<span style="color:red">${s}<span>`));
+          var output = $.isNumeric(s) ? (s!="null"?Math.round(parseFloat(("" + s))*100)/100:(`<span style="color:red">${s}<span>`)) : s;
           tmpTr.push('<td style="border:solid 1px #abc;height:40px;value:2;"><div style="width:' + tdLenArr[k] + 'px">' + output + '</div></td>');
          }
 
