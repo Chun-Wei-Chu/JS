@@ -55,57 +55,50 @@ function buildTable(tabledata, target)
       function(){
         var DivClassByFreq = $("<div></div>").appendTo($(target));
 
-        setTimeout(
-          function(){
-            DivClassByFreq.html(
-              '<div><tr><div style="height:20px;"></div></tr><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"  onkeyup="buildTable_ToDoScrollToSearch(event, this);"><button onclick="buildTable_scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode);">搜尋</button></div></div></tr></div>'
-            );	
+		DivClassByFreq.html(
+		  '<div><tr><div style="height:20px;"></div></tr><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"  onkeyup="buildTable_ToDoScrollToSearch(event, this);"><button onclick="buildTable_scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode);">搜尋</button></div></div></tr></div>'
+		);	
 
-            //freq table's header
-            setTimeout(
-              function(){
-                var tdLenArr = [];
-                var tdLenArr_total_length=20;
-                DivClassByFreq = $("<div></div>").appendTo(DivClassByFreq)
-                  .attr("class", "buildTable_innerTable");
+		//freq table's header
+		setTimeout(
+		  function(){
+			var tdLenArr = [];
+			var tdLenArr_total_length=20;
+			DivClassByFreq = $("<div></div>").appendTo(DivClassByFreq)
+			  .attr("class", "buildTable_innerTable");
 
-                var tmpTarget = $("<tr></tr>").appendTo(
-					$("<div></div>").appendTo(DivClassByFreq)
-					  .attr("class", "thead")
-					  .attr("style", "display:inline;width:100%;position:relative;")
-				).attr("style", "background:#dee;").attr("stick", 3);
-                var tmpTr=[];
-                for(var j=0; j < tabledata.thead.length ; j++)
-                {
-                  var tmpText = tabledata.thead[j];
-				  var field_maxlength = buildTable_getMaxLength(tmpText, tabledata.tbody, j);
-                  tmpTr.push('<td class="columnName" style="border:solid 1px #abc;text-align:center;word-break: keep-all;" colkey="'+j+'"><div style="width:'+field_maxlength+'px">'+tmpText+'</div></td>');
-                  tdLenArr.push(field_maxlength);
-                  tdLenArr_total_length+=field_maxlength;
-                }
+			var tmpTarget = $("<tr></tr>").appendTo(
+				$("<div></div>").appendTo(DivClassByFreq)
+				  .attr("class", "thead")
+				  .attr("style", "display:inline;width:100%;position:relative;")
+			).attr("style", "background:#dee;").attr("stick", 3);
+			var tmpTr=[];
+			for(var j=0; j < tabledata.thead.length ; j++)
+			{
+			  var tmpText = tabledata.thead[j];
+			  var field_maxlength = buildTable_getMaxLength(tmpText, tabledata.tbody, j);
+			  tmpTr.push('<td class="columnName" style="border:solid 1px #abc;text-align:center;word-break: keep-all;" colkey="'+j+'"><div style="width:'+field_maxlength+'px">'+tmpText+'</div></td>');
+			  tdLenArr.push(field_maxlength);
+			  tdLenArr_total_length+=field_maxlength;
+			}
 
-                DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px");
+			DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px");
 
-				tmpTarget.html(tmpTr.join(''));
+			tmpTarget.html(tmpTr);
 
-				/*動態調整table邊界 以避免高度過高問題*/
-				var tbodyheight=46*tabledata.tbody.length;
-				DivTbody = $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
-				
-                //加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
-                window.addEventListener("resize", function() {
-                  DivClassByFreq.width(Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length+5));
-		DivTbody.height(Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight));
-                });
+			/*動態調整table邊界 以避免高度過高問題*/
+			var tbodyheight=46*tabledata.tbody.length;
+			DivTbody = $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
+			
+			//加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
+			window.addEventListener("resize", function() {
+			  DivClassByFreq.width(Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length+5));
+			  DivTbody.height(Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight));
+			});
 
-                setTimeout(
-                  function(){
-                    setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr), 0);
-                  }.call(this),0);
+			setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr), 0);
 
-              }.call(this) ,0);
-
-          }.call(this) ,0);
+		  }.call(this) ,0);
 
       }.call(this),0);
 }
@@ -130,7 +123,6 @@ function buildTable_tbody(data, target, header, tdLenArr)
     arrayTable=[];  //儲存所有已建好的資料<tr><td>data</td><tr>
 
   target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length+1)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
-
 
   /*建立scroller事件*/
   buildTable_scrollerSet(body, header.parent(), target, arrayTable);
@@ -161,8 +153,7 @@ function buildTable_tbody(data, target, header, tdLenArr)
            return;
          }
 
-         //$(target[0]).append('<tr stick="0">' + tmpTr.join('') + '</tr>');
-         arrayTable.push('<tr stick="0" onmouseover="buildTable_onmouseover(this)" onmouseout="buildTable_onmouseout(this)" onclick="buildTable_onclick(this)">' + tmpTr.join('') + '</tr>');
+         arrayTable.push('<tr stick="0" onmouseover="buildTable_onmouseover(this)" onmouseout="buildTable_onmouseout(this)" onclick="buildTable_onclick(this)">' + tmpTr + '</tr>');
        }
 
        if (requestAnimationFrame) {
@@ -174,7 +165,6 @@ function buildTable_tbody(data, target, header, tdLenArr)
      else
      {
        /*初始化內容*/
-       target.parent().parent().parent().parent()[0].arrayTable=arrayTable;
        if(target.html()=="")
        {
          var tmpHTML = "";
@@ -208,7 +198,6 @@ function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
 {
   var last_scollerY = 0,
     last_scollerX = 0;
-
 
   tbody.scroll(function(e) {
     if(last_scollerY!=this.scrollTop)
@@ -250,6 +239,7 @@ function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
     }
   });
 }
+
 
 /************************ search bar 會自動跳到指定td *************************/
 function buildTable_ToDoScrollToSearch(event, tmpThis)
