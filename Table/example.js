@@ -46,9 +46,11 @@ for(var i = 0; i < 80; i++)
 	tabledata.tbody.push(tmpBody);
 }
 
-buildTable(tabledata, "body");
+buildTable(tabledata, "body", function(target, arrayTable){
+	target.find(".columnName").click(function(){console.log($(this).attr("colkey"));});
+});
 
-function buildTable(tabledata, target)
+function buildTable(tabledata, target, callback)
 {
 	this.target = target;
 	setTimeout(
@@ -82,7 +84,7 @@ function buildTable(tabledata, target)
 			  tdLenArr_total_length+=field_maxlength;
 			}
 
-			DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px");
+			DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px;");
 
 			tmpTarget.html(tmpTr);
 
@@ -96,7 +98,7 @@ function buildTable(tabledata, target)
 			  DivTbody.height(Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight));
 			});
 
-			setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr), 0);
+			setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
 
 		  }.call(this) ,0);
 
@@ -116,7 +118,7 @@ function buildTable_getMaxLength(thead, tbodys, fieldIndex)
 }
 /*一列一列畫*/
 //stick 相關是用來做效果的
-function buildTable_tbody(data, target, header, tdLenArr)
+function buildTable_tbody(data, target, header, tdLenArr, callback)
 {
   var tmpThis = this,
     body = target,  //記錄下來以免多次查詢，用一點記憶體換時間
@@ -126,7 +128,10 @@ function buildTable_tbody(data, target, header, tdLenArr)
 
   /*建立scroller事件*/
   buildTable_scrollerSet(body, header.parent(), target, arrayTable);
-
+  
+  /*建立額外事件*/
+  if(typeof callback == "function") setTimeout(callback(header.parent(), arrayTable), 0);
+  
   var j = 0,
    Loop = data.length,
    requestAnimationFrame =
@@ -144,7 +149,7 @@ function buildTable_tbody(data, target, header, tdLenArr)
         for (var k = 0; k < data[j].length; k++) {
           var s = (data[j][k] == null ? "null" : data[j][k]);
           var output = $.isNumeric(s) ? (s!="null"?Math.round(parseFloat(("" + s))*100)/100:(`<span style="color:red">${s}<span>`)) : s;
-          tmpTr.push('<td style="border:solid 1px #abc;height:40px;value:2;"><div style="width:' + tdLenArr[k] + 'px">' + output + '</div></td>');
+          tmpTr.push('<td style="border:solid 1px #abc;height:40px;"><div style="width:' + tdLenArr[k] + 'px">' + output + '</div></td>');
          }
 
          /*如果已經終止則不再做任何動作*/
@@ -264,7 +269,7 @@ function buildTable_scrollToSearch(str, target)
     {
       for (var i = 0; i < divs.length; i++)
       {
-          $(divs[i].getElementsByTagName("div")).css("color","black");
+          $(divs[i].getElementsByTagName("div")).css("color","");
       }
       return;
     }
@@ -276,7 +281,7 @@ function buildTable_scrollToSearch(str, target)
       }
       else
       {
-        $(divs[i].getElementsByTagName("div")).css("color","black");
+        $(divs[i].getElementsByTagName("div")).css("color","");
       }
     }
   }
