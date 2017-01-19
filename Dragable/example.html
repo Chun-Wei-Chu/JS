@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="DragableHtml.js"></script>
+	</head>
+	
+	<body>
+		<div style="position:absolute;right:0%;top:0%;width:400px;background:#bbb;opacity:0.9;border-radius: 5%;" align="center" valign="center">
+			<div style="width:90%;">
+				choose the video src :<input id="input_createNew"></input><button id="btn_createNew">send</button><br/>
+				<span>https://www.youtube.com/embed/szGb41hHUHs<span></br></br>
+				<span>https://www.youtube.com/embed/cSLAO7zxS2M<span></br></br>
+				<span>https://www.youtube.com/embed/GTU_GSTnDZE<span>
+			</div>
+		</div>
+		
+		<script>
+		
+			/***************initial*****************/		
+			$("#btn_createNew").click(function(){
+				new addIframe("body", '<iframe style="width:90%;height:80%" src="'+$("#input_createNew").val()+'" frameborder="0" allowfullscreen></iframe>');
+			});
+			
+			//new addIframe(target, innerhtml);
+			new addIframe("body", '<iframe style="width:90%;height:80%" src="https://www.youtube.com/embed/sW3RT0tF020" frameborder="0" allowfullscreen></iframe>');
+		</script>
+	</body>
+</html>
