@@ -14,6 +14,13 @@ function dropable_init()
         
         .resizer { width: 5px; height: 5px; background: blue; position:absolute; right: 0; bottom: 0; cursor: se-resize; }
         .close { width: 15px; height: 15px; background: red; position:absolute; right: 0; top: 0; cursor:default;}
+		
+		.whenDrag {
+		  -webkit-user-select: none;
+			 -moz-user-select: -moz-none;
+			   -ms-user-select: none;
+				      user-select: none;
+		}
     </style>`;
     
     $("head").append(drop_style);
@@ -37,6 +44,7 @@ function addIframe(body, innerHtml){
 	// Destroy the object when we are done
 	this._destroy = function() {
 		tmpThis.selected = null;
+		$("body").removeClass("whenDrag");
 	}
 
 	document.onmousemove = this._move_elem;
@@ -65,7 +73,11 @@ function addIframe(body, innerHtml){
 addIframe.prototype.body;
 
 addIframe.prototype.initDrag = function (e, node) {
+   this.selected = null;
+   this.dragable = false;
    var tmpThis = this;
+   $("body").addClass("whenDrag");
+   
    p = node.parentNode;
    startX = e.clientX;
    startY = e.clientY;
@@ -86,12 +98,14 @@ addIframe.prototype.doDrag = function(e) {
 
 addIframe.prototype.stopDrag = function(e) {
 	var tmpThis = document.initDrag_element;
+	tmpThis.dragable = true;
+	$("body").removeClass("whenDrag");
 	document.documentElement.removeEventListener('mousemove', tmpThis.doDrag, false);    
 	document.documentElement.removeEventListener('mouseup', tmpThis.stopDrag, false);   
 	
 	/*恢復原本作用*/
 	document.initDrag_element = null;
-	document.onmousemove = _move_elem;
+	document.onmousemove = tmpThis._move_elem;
 }
 
 /*********************** close window *************************/
@@ -131,6 +145,7 @@ addIframe.prototype.changeSelect = function(tmp){
 
 /*透過mouse event建立類似drag - drog的行為*/
 addIframe.prototype.selected = null;
+addIframe.prototype.dragable = true;
 
 addIframe.prototype._drag_init = function(elem, element) {
 	// Store the object of the element which needs to be moved
@@ -141,6 +156,8 @@ addIframe.prototype._drag_init = function(elem, element) {
 
 // Bind the functions...
 addIframe.prototype.Onmousedown = function(tmp, element) {
+	if(!element.dragable) return;
+	$("body").addClass("whenDrag");
 	document.onmousemove = element._move_elem;
 	document.onmouseup = element._destroy;
 	element._drag_init(tmp, element);
