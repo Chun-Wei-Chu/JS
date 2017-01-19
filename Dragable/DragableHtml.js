@@ -53,11 +53,13 @@ function addIframe(body, innerHtml){
 			'<div id="tmp" class="draggable-element" ontouchstart="touchstart(window.event, this);" ontouchmove="touchmove(window.event, this);">'
 			+'  <div class="close">x</div>'
 			+'  <div class="resizer"></div>'
-			+'  <div style="width:100%;height:100%;" align="center" valign="center">'
+			+'  <div class="Drag_innerHtml" style="width:100%;height:100%;" align="center" valign="center">'
 			+innerHtml
 			+'  </div>'
 			+'</div>'
 	).appendTo(body);
+	
+	this.innerHtml = this.find(".Drag_innerHtml");
 	
 	this.body.on("click", function(){tmpThis.changeSelect(this);});
 	this.body.on("mousedown", function(){
@@ -67,10 +69,13 @@ function addIframe(body, innerHtml){
 	this.body.on("touchstart", function(){tmpThis.changeSelect(this);});
 	this.body.find(".close").on("click", function(){tmpThis.closeWindow();});
 	this.body.find(".resizer").on("mousedown", function(){tmpThis.initDrag(window.event, this);});
+	
+	return this.body;
 }
 
 /**************************** resize select window ***********************************/
 addIframe.prototype.body;
+addIframe.prototype.innerHtml;
 
 addIframe.prototype.initDrag = function (e, node) {
    this.selected = null;
