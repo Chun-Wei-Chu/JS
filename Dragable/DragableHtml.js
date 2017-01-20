@@ -33,11 +33,11 @@ function addIframe(body, innerHtml){
 	
 	// Will be called when user dragging an element
 	this._move_elem = function(e) {
-		x_pos = document.all ? window.event.clientX : e.pageX;
+		x_pos = (document.all ? window.event.clientX : e.pageX);
 		y_pos = document.all ? window.event.clientY : e.pageY;
 		if (tmpThis.selected !== null) {
-			tmpThis.selected.style.left = (x_pos - x_elem) + 'px';
-			tmpThis.selected.style.top = (y_pos - y_elem) + 'px';
+			tmpThis.selected.style.left = ((x_pos - x_elem) < 0 ? 0 : (x_pos - x_elem)) + 'px';
+			tmpThis.selected.style.top = ((y_pos - y_elem) < 0 ? 0 : (y_pos - y_elem)) + 'px';
 		}
 	}
 
@@ -50,18 +50,15 @@ function addIframe(body, innerHtml){
 	document.onmousemove = this._move_elem;
 	document.onmouseup = this._destroy;
 	this.body = $(
-			'<div id="tmp" class="draggable-element" ontouchstart="touchstart(window.event, this);" ontouchmove="touchmove(window.event, this);">'
+			'<div class="draggable-element" ontouchstart="touchstart(window.event, this);" ontouchmove="touchmove(window.event, this);">'
 			+'  <div class="close">x</div>'
 			+'  <div class="resizer"></div>'
-			+'  <div class="Drag_innerHtml" style="width:100%;height:100%;overflow:auto;" align="center" valign="center">'
+			+'  <div style="width:100%;height:100%;" align="center" valign="center">'
 			+innerHtml
 			+'  </div>'
 			+'</div>'
 	).appendTo(body);
 	
-	this.innerHtml = this.find(".Drag_innerHtml");
-	
-	this.body.on("click", function(){tmpThis.changeSelect(this);});
 	this.body.on("mousedown", function(){
 		tmpThis.changeSelect(this);
 		tmpThis.Onmousedown(this, tmpThis);
@@ -69,13 +66,10 @@ function addIframe(body, innerHtml){
 	this.body.on("touchstart", function(){tmpThis.changeSelect(this);});
 	this.body.find(".close").on("click", function(){tmpThis.closeWindow();});
 	this.body.find(".resizer").on("mousedown", function(){tmpThis.initDrag(window.event, this);});
-	
-	return this.body;
 }
 
 /**************************** resize select window ***********************************/
 addIframe.prototype.body;
-addIframe.prototype.innerHtml;
 
 addIframe.prototype.initDrag = function (e, node) {
    this.selected = null;
@@ -141,8 +135,8 @@ addIframe.prototype.touchmove = function(e, box2){
 }
 
 addIframe.prototype.changeSelect = function(tmp){
-	$(tmp).parent().find(".draggable-element").css("opacity","0.7");
-	$(tmp).parent().find(".draggable-element").css("z-index","1");
+	$(tmp).siblings(".draggable-element").css("opacity","0.7");
+	$(tmp).siblings(".draggable-element").css("z-index","1");
 	
 	tmp.style.opacity=1;
 	tmp.style.zIndex=2;
