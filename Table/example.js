@@ -1,65 +1,44 @@
-var tabledata={
-	thead:["test", "test", "test", "test", "test", "test", "test", "test", "test", "test10", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test20", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test30", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test40", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test50", "test", "test", "test", "test", "test", "test", "test", "test", "test", "test60"],
+/*
+
+var tabledata = {
+	thead:[ field1, field2, ...],
 	tbody:[
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-		[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+		["dataOfFied1", "dataOfFied2", ...],
+		["dataOfFied1", "dataOfFied2", ...],
+		...
 	]
+	
 }
 
-tabledata = {};
-tabledata.thead = [];
-tabledata.tbody = [];
 
-for(var i = 0; i < 80; i++)
-{
-	var tmpBody = [];
-	for(var j = 0;j < 60; j++)
-	{
-		if(i == 0)
-		{
-			tabledata.thead.push("test"+ j );
-		}
-		tmpBody.push("<div style='color:red;'>heillo"+ j +"</div>");
-	}
-	tabledata.tbody.push(tmpBody);
-}
-
-buildTable(tabledata, "body", function(target, arrayTable){
-	target.find(".columnName").click(function(){console.log($(this).attr("colkey"));});
+new buildTable(tabledata, targetByJQuery, function(createTable, datalistOfTbody){...});
 });
+
+*/
 
 function buildTable(tabledata, target, callback)
 {
+	this.tabledata = tabledata;
 	this.target = target;
+	var This = this;
 	setTimeout(
       function(){
-        var DivClassByFreq = $("<div></div>").appendTo($(target));
+	    This.elem = $("<div></div>").appendTo($(target));;
+        var DivClassByFreq = This.elem;
 
 		DivClassByFreq.html(
-		  '<div><tr><div style="height:20px;"></div></tr><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"  onkeyup="buildTable_ToDoScrollToSearch(event, this);"><button onclick="buildTable_scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode);">搜尋</button></div></div></tr></div>'
+		  '<div><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"><button>搜尋</button></div></div></tr></div>'
 		);	
+
+		{
+			var tmpThis = this;
+			DivClassByFreq.find("button").on("click", function(){
+				tmpThis.scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode);
+			});
+			DivClassByFreq.find("input").on("keyup", function(){
+				tmpThis.ToDoScrollToSearch(event, this);
+			});
+		}
 
 		//freq table's header
 		setTimeout(
@@ -78,7 +57,7 @@ function buildTable(tabledata, target, callback)
 			for(var j=0; j < tabledata.thead.length ; j++)
 			{
 			  var tmpText = tabledata.thead[j];
-			  var field_maxlength = buildTable_getMaxLength(tmpText, tabledata.tbody, j);
+			  var field_maxlength = this.getMaxLength(tmpText, tabledata.tbody, j);
 			  tmpTr.push('<td class="columnName" style="border:solid 1px #abc;text-align:center;word-break: keep-all;" colkey="'+j+'"><div style="width:'+field_maxlength+'px">'+tmpText+'</div></td>');
 			  tdLenArr.push(field_maxlength);
 			  tdLenArr_total_length+=field_maxlength;
@@ -93,19 +72,27 @@ function buildTable(tabledata, target, callback)
 			DivTbody = $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
 			
 			//加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
+			var tmpMinWidth =Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length + 5);
+			var tmpMinHeight = Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight);
 			window.addEventListener("resize", function() {
-			  DivClassByFreq.width(Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length+5));
-			  DivTbody.height(Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight));
+			  setTimeout(function(){
+				tmpMinWidth = (DivClassByFreq.parent().width() != null && DivClassByFreq.parent().width() > 0? Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length) : tmpMinWidth);
+				tmpMinHeight = (DivClassByFreq.parent().parent().height() != null ? Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight) : tmpMinHeight)
+				DivClassByFreq.width(tmpMinWidth);
+				DivTbody.height(tmpMinHeight);
+			  }, 0);
 			});
 
-			setTimeout(buildTable_tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
+			setTimeout(this.tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
 
 		  }.call(this) ,0);
 
       }.call(this),0);
 }
 
-function buildTable_getMaxLength(thead, tbodys, fieldIndex)
+buildTable.prototype.elem;
+
+buildTable.prototype.getMaxLength = function(thead, tbodys, fieldIndex)
 {
 	var max = 0;
 	for(var i = 0; i < tbodys.length; i++)
@@ -115,19 +102,21 @@ function buildTable_getMaxLength(thead, tbodys, fieldIndex)
 	
 	max = Math.max(max, JSON.stringify(thead).replace(/<[^>]*>||<\/.*>||<.*\/>/ig, "").length);
 	return max*10+20;
-}
+};
 /*一列一列畫*/
 //stick 相關是用來做效果的
-function buildTable_tbody(data, target, header, tdLenArr, callback)
+buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
 {
   var tmpThis = this,
     body = target,  //記錄下來以免多次查詢，用一點記憶體換時間
-    arrayTable=[];  //儲存所有已建好的資料<tr><td>data</td><tr>
+    arrayTable={};  //儲存所有已建好的資料<tr><td>data</td><tr>，和原本的值方便後續動作
+	arrayTable.Html = [];
+	arrayTable.value = [];
 
   target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length+1)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
   /*建立scroller事件*/
-  buildTable_scrollerSet(body, header.parent(), target, arrayTable);
+  this.scrollerSet(body, header.parent(), target, arrayTable);
   
   /*建立額外事件*/
   if(typeof callback == "function") setTimeout(callback(header.parent(), arrayTable), 0);
@@ -147,9 +136,7 @@ function buildTable_tbody(data, target, header, tdLenArr, callback)
        for(var l=0;l<100&&j<Loop;l++, j++){
         var tmpTr = [];
         for (var k = 0; k < data[j].length; k++) {
-          var s = (data[j][k] == null ? "null" : data[j][k]);
-          var output = $.isNumeric(s) ? (s!="null"?Math.round(parseFloat(("" + s))*100)/100:(`<span style="color:red">${s}<span>`)) : s;
-          tmpTr.push('<td style="border:solid 1px #abc;height:40px;"><div style="width:' + tdLenArr[k] + 'px">' + output + '</div></td>');
+          tmpTr.push('<td style="border:solid 1px #abc;height:40px;"><div style="width:' + tdLenArr[k] + 'px">' + data[j][k] + '</div></td>');
          }
 
          /*如果已經終止則不再做任何動作*/
@@ -157,8 +144,8 @@ function buildTable_tbody(data, target, header, tdLenArr, callback)
          {
            return;
          }
-
-         arrayTable.push('<tr stick="0" onmouseover="buildTable_onmouseover(this)" onmouseout="buildTable_onmouseout(this)" onclick="buildTable_onclick(this)">' + tmpTr + '</tr>');
+		 arrayTable.value.push(data[j]);
+         arrayTable.Html.push('<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">' + tmpTr + '</tr>');
        }
 
        if (requestAnimationFrame) {
@@ -173,9 +160,9 @@ function buildTable_tbody(data, target, header, tdLenArr, callback)
        if(target.html()=="")
        {
          var tmpHTML = "";
-         for(var i=0 ; i < 40 && i < arrayTable.length;i++)
+         for(var i=0 ; i < 40 && i < arrayTable.Html.length;i++)
          {
-           tmpHTML+=arrayTable[i];
+           tmpHTML+=arrayTable.Html[i];
          }
          target.html(tmpHTML);
        }
@@ -184,22 +171,9 @@ function buildTable_tbody(data, target, header, tdLenArr, callback)
   requestAnimationFrame ? requestAnimationFrame(doRequestFrame) : doRequestFrame();
 }
 
-function buildTable_onmouseover(tmp)
-{
-  if(tmp.getAttribute('stick')==0)tmp.style.background='#cde';
-}
-function buildTable_onmouseout(tmp)
-{
-  if(tmp.getAttribute('stick')==0)tmp.style.background='';
-}
-function buildTable_onclick(tmp)
-{
-  tmp.setAttribute('stick', tmp.getAttribute('stick')^1);
-}
-
 /*配置scroller，將全螢幕模式和一般模式的scroller統一管理*/
 /*("scroller所在的element(會顯示的畫面)", "table header", "最內層可移動的空間", "資料table格式為[<tr><td>...</td>...</tr>, ..., <tr><td>...</td>...</tr>]的array")*/
-function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
+buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 {
   var last_scollerY = 0,
     last_scollerX = 0;
@@ -210,22 +184,22 @@ function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
       if(!this.last_start)this.last_start = 0;
       var tmpArray = ScrollTr.html().split("</tr>");
       var tmpArray = ScrollTr.html().split("</tr>");
-      for(var i = this.last_start, j = 0; i < this.last_start+20 && i < arrayTable.length; i++, j++)
+      for(var i = this.last_start, j = 0; i < this.last_start+20 && i < arrayTable.Html.length; i++, j++)
       {	    
-        if(tmpArray[j].indexOf('stick="1"')!=-1 || (arrayTable[i].indexOf('stick="1"')!=-1 && tmpArray[j].indexOf('stick="0"')!=-1))
-          arrayTable[i] = tmpArray[j] + "</tr>";
+        if(tmpArray[j].indexOf('stick="1"')!=-1 || (arrayTable.Html[i].indexOf('stick="1"')!=-1 && tmpArray[j].indexOf('stick="0"')!=-1))
+          arrayTable.Html[i] = tmpArray[j] + "</tr>";
       }
 
+	  var tmpHTML = "";
+      var start = Math.floor(this.scrollTop/40);
+	  
       ScrollTr.css({
-        top: this.scrollTop + 'px'
+        top: (start*40) + 'px'
       });
 
-      var tmpHTML = "";
-      var start = Math.floor(this.scrollTop/40);
-
-      for(var i=start ; i < start+20 && i < arrayTable.length;i++)
+      for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
       {
-        tmpHTML+=arrayTable[i];
+        tmpHTML+=arrayTable.Html[i];
       }
       ScrollTr.html(tmpHTML);
 
@@ -247,14 +221,14 @@ function buildTable_scrollerSet(tbody, thead, ScrollTr, arrayTable)
 
 
 /************************ search bar 會自動跳到指定td *************************/
-function buildTable_ToDoScrollToSearch(event, tmpThis)
+buildTable.prototype.ToDoScrollToSearch = function(event, tmpThis)
 {
   if(event.keyCode == 13){
-       buildTable_scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode)
+       this.scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode)
    }
 }
 
-function buildTable_scrollToSearch(str, target)
+buildTable.prototype.scrollToSearch = function(str, target)
 {
   var divs = target.getElementsByClassName("columnName");
 
@@ -312,6 +286,6 @@ function buildTable_scrollToSearch(str, target)
   {
     target.index = -1;
     $(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
-    buildTable_scrollToSearch(str, target);
+    this.scrollToSearch(str, target);
   }
 }
