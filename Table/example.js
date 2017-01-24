@@ -173,12 +173,18 @@ buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
 
 /*配置scroller，將全螢幕模式和一般模式的scroller統一管理*/
 /*("scroller所在的element(會顯示的畫面)", "table header", "最內層可移動的空間", "資料table格式為[<tr><td>...</td>...</tr>, ..., <tr><td>...</td>...</tr>]的array")*/
+buildTable.prototype.scrollInit;
 buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 {
   var last_scollerY = 0,
     last_scollerX = 0;
-
+	
+  this.scrollInit = function()
+  {
+	  ScrollTr.parent().parent().scrollTop(last_scollerY);
+  }
   tbody.scroll(function(e) {
+
     if(last_scollerY!=this.scrollTop)
     {
       if(!this.last_start)this.last_start = 0;
@@ -196,7 +202,7 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
       ScrollTr.css({
         top: (start*40) + 'px'
       });
-
+	  
       for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
       {
         tmpHTML+=arrayTable.Html[i];
@@ -218,7 +224,6 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
     }
   });
 }
-
 
 /************************ search bar 會自動跳到指定td *************************/
 buildTable.prototype.ToDoScrollToSearch = function(event, tmpThis)
