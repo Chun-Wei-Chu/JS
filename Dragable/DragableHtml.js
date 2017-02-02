@@ -53,7 +53,7 @@ function addIframe(body, innerHtml){
 			'<div class="draggable-element" ontouchstart="touchstart(window.event, this);" ontouchmove="touchmove(window.event, this);">'
 			+'  <div class="close">x</div>'
 			+'  <div class="resizer"></div>'
-			+'  <div style="width:100%;height:100%;" align="center" valign="center">'
+			+'  <div class="draggable-innerHtml" style="width:100%;height:100%;overflow:auto;" align="center" valign="center">'
 			+innerHtml
 			+'  </div>'
 			+'</div>'
