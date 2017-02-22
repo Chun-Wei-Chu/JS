@@ -113,7 +113,7 @@ buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
 	arrayTable.Html = [];
 	arrayTable.value = [];
 
-  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length+1)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
+  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
   /*建立scroller事件*/
   this.scrollerSet(body, header.parent(), target, arrayTable);
