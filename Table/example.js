@@ -23,7 +23,7 @@ function buildTable(tabledata, target, callback)
 	var This = this;
 	setTimeout(
       function(){
-	    This.elem = $("<div></div>").appendTo($(target));;
+	    This.elem = $('<div style="text-align:left;"></div>').appendTo($(target));;
         var DivClassByFreq = This.elem;
 
 		DivClassByFreq.html(
