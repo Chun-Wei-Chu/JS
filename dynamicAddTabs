@@ -1,0 +1,65 @@
+/*
+  new createTabs(target, initInnerHtml);
+  ex: new createTabs("body", '<div>...</div>');
+*/
+
+
+var createTabs_functionArray_ready = [];
+function execute_createTabs_function(i, innerHtml)
+{
+	createTabs_functionArray_ready[i].owner[createTabs_functionArray_ready[i].functionName](innerHtml);
+}
+
+function createTabs(target, initInnerHtml)
+{
+	var _index = createTabs_functionArray_ready.length;
+	this.body = $(`
+		<div class="right-down-MainBody" style="height:100%;">
+			<ul class="nav nav-tabs" id="AlertRecord_tab_heads">
+			  <li onclick="execute_createTabs_function(${_index}, 123)"><a style="color:red; cursor:pointer;" >+</a></li>
+			  <li class="active AlertRecord_MainTab"><a data-toggle="tab" href="#AlertRecord_Single">觸發警示(單)</a></li>
+			</ul>
+
+			<div class="tab-content AlertRecord_tab_bodys">
+			  <div class="AlertRecord_Single tab-pane fade in active" style="overflow:auto; height:90%;">
+				  <div class="replaceable-tab col-xs-12" style="width:100%; overflow: auto;">
+					${initInnerHtml}
+				  </div>
+			  </div>
+			</div>
+		</div>
+	`).appendTo(target);
+	
+	createTabs_functionArray_ready.push({
+		owner: this,
+		functionName: "AddNew_SingleTab"
+	});
+}
+createTabs.prototype.body;
+
+createTabs.prototype.tabNum = 0;
+createTabs.prototype.AddNew_SingleTab = function(innerHtml)
+{	
+	this.body.find(".nav-tabs").append(`
+		<li class="AlertRecord_removable_Tab AlertRecord_Single_tab-${this.tabNum}" value="${this.tabNum}"><a data-toggle="tab" href="#AlertRecord_Single_body-${this.tabNum}">(單)</a></li>
+	`);
+	this.body.find(".AlertRecord_tab_bodys").append(`
+		<div id="AlertRecord_Single_body-${this.tabNum}" class="AlertRecord_removable_Tab tab-pane fade" style="overflow:auto; height:90%;">
+			<div style="float:right; color:#bbb; cursor:pointer;" value="${this.tabNum}" onclick="AlertRecord_Tab_removeCurrent(this)">X</div>
+			<div class="replaceable-tab col-xs-12" style="width:100%; overflow: auto;">	
+				${innerHtml}
+			</div>
+	    </div>
+	`);
+	this.tabNum++;
+}
+
+function AlertRecord_Tab_removeCurrent(elem)
+{
+	var tmpNum = Number($(elem).attr("value"));
+	var tmpParentNode = $(elem).parent().parent().parent();
+	tmpParentNode.find(".AlertRecord_Single_tab-" + tmpNum).remove();
+	tmpParentNode.find(".AlertRecord_Single_body-" + tmpNum).remove();
+	tmpParentNode.find(".AlertRecord_MainTab").addClass("active");
+	tmpParentNode.find(".AlertRecord_Single").addClass("in active");
+}
