@@ -268,7 +268,7 @@ buildTable.prototype.scrollToSearch = function(str, target)
   var lastSelect = target.index;
   for (var i = target.index+1; i < divs.length; i++) {
       var para = divs[i].getElementsByTagName("div");
-      var index = para[0].innerText.toLowerCase().indexOf(str);
+      var index = para[0].innerText.toLowerCase().indexOf(str.toLowerCase());
       if (index != -1) {
         //para[0].scrollIntoView();
         $(para[0]).css("color","red");
