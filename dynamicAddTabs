@@ -15,21 +15,21 @@ function createTabs(target, initInnerHtml)
 	var _index = createTabs_functionArray_ready.length;
 	this.body = $(`
 		<div class="right-down-MainBody" style="height:100%;">
-			<ul class="nav nav-tabs" id="AlertRecord_tab_heads">
+			<ul class="nav nav-tabs">
 			  <li onclick="execute_createTabs_function(${_index}, 123)"><a style="color:red; cursor:pointer;" >+</a></li>
-			  <li class="active AlertRecord_MainTab"><a data-toggle="tab" href="#AlertRecord_Single">觸發警示(單)</a></li>
+			  <li class="active createTabs_MainTab"><a data-toggle="tab" href=".createTabs_Single">觸發警示(單)</a></li>
 			</ul>
 
-			<div class="tab-content AlertRecord_tab_bodys">
-			  <div class="AlertRecord_Single tab-pane fade in active" style="overflow:auto; height:90%;">
+			<div class="tab-content createTabs_tab_bodys">
+			  <div class="createTabs_Single tab-pane fade in active" style="overflow:auto; height:90%;">
 				  <div class="replaceable-tab col-xs-12" style="width:100%; overflow: auto;">
-					${initInnerHtml}
+					${initInnerHtml == undefined ? "":initInnerHtml}
 				  </div>
 			  </div>
 			</div>
 		</div>
 	`).appendTo(target);
-	
+
 	createTabs_functionArray_ready.push({
 		owner: this,
 		functionName: "AddNew_SingleTab"
@@ -41,25 +41,26 @@ createTabs.prototype.tabNum = 0;
 createTabs.prototype.AddNew_SingleTab = function(innerHtml)
 {	
 	this.body.find(".nav-tabs").append(`
-		<li class="AlertRecord_removable_Tab AlertRecord_Single_tab-${this.tabNum}" value="${this.tabNum}"><a data-toggle="tab" href="#AlertRecord_Single_body-${this.tabNum}">(單)</a></li>
+		<li class="createTabs_removable_Tab createTabs_Single_tab-${this.tabNum}" value="${this.tabNum}"><a data-toggle="tab" href=".createTabs_Single_body-${this.tabNum}">(單)</a></li>
 	`);
-	this.body.find(".AlertRecord_tab_bodys").append(`
-		<div id="AlertRecord_Single_body-${this.tabNum}" class="AlertRecord_removable_Tab tab-pane fade" style="overflow:auto; height:90%;">
-			<div style="float:right; color:#bbb; cursor:pointer;" value="${this.tabNum}" onclick="AlertRecord_Tab_removeCurrent(this)">X</div>
+	this.body.find(".createTabs_tab_bodys").append(`
+		<div class="createTabs_Single_body-${this.tabNum} createTabs_removable_Tab tab-pane fade" style="overflow:auto; height:90%;">
+			<div style="float:right; color:#bbb; cursor:pointer;" value="${this.tabNum}" onclick="createTabs_Tab_removeCurrent(this)">X</div>
 			<div class="replaceable-tab col-xs-12" style="width:100%; overflow: auto;">	
-				${innerHtml}
+				${innerHtml == undefined ? "":innerHtml}
 			</div>
-	    </div>
+		</div>
 	`);
 	this.tabNum++;
 }
 
-function AlertRecord_Tab_removeCurrent(elem)
+function createTabs_Tab_removeCurrent(elem)
 {
 	var tmpNum = Number($(elem).attr("value"));
 	var tmpParentNode = $(elem).parent().parent().parent();
-	tmpParentNode.find(".AlertRecord_Single_tab-" + tmpNum).remove();
-	tmpParentNode.find(".AlertRecord_Single_body-" + tmpNum).remove();
-	tmpParentNode.find(".AlertRecord_MainTab").addClass("active");
-	tmpParentNode.find(".AlertRecord_Single").addClass("in active");
+	tmpParentNode.find(".createTabs_Single_tab-" + tmpNum).remove();
+	tmpParentNode.find(".createTabs_Single_body-" + tmpNum).remove();
+	tmpParentNode.find(".createTabs_MainTab").addClass("active");
+	tmpParentNode.find(".createTabs_Single").addClass("in active");
 }
+
