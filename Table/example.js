@@ -20,23 +20,46 @@ function buildTable(tabledata, target, callback)
 {
 	this.tabledata = tabledata;
 	this.target = target;
+	this.table_search_type = "Field";
+	
 	var This = this;
 	setTimeout(
       function(){
-	    This.elem = $('<div style="text-align:left;"></div>').appendTo($(target));;
+        This.elem = $('<div style="text-align:left;"></div>').appendTo($(target));
         var DivClassByFreq = This.elem;
 
 		DivClassByFreq.html(
-		  '<div><tr><div style="color:red;"> <div style="display:inline;float:right;color:black;"><input type="text" size="10"><button>搜尋</button></div></div></tr></div>'
+		  `<div><tr>
+				<div style="color:red;">
+				<div style="display:inline;float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
+				<div class="dropdown" style="display:inline;float:right;color:black;">
+				  <button style="height:25px" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+				  <div style="display:inline;" class="search-type" value="${this.table_search_type}">${this.table_search_type}</div>
+				  <span class="caret"></span></button>
+				  <ul class="dropdown-menu">
+					<li value="Field"><a href="#">Field</a></li>
+					<li value="Filter"><a href="#">Filter</a></li>
+				  </ul>
+				</div>
+			</tr></div>`
 		);	
 
 		{
 			var tmpThis = this;
-			DivClassByFreq.find("button").on("click", function(){
-				tmpThis.scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode);
+			DivClassByFreq.find(".btn_search").first().on("click", function(){
+				tmpThis.scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode, tmpThis.table_search_type);
 			});
 			DivClassByFreq.find("input").on("keyup", function(){
-				tmpThis.ToDoScrollToSearch(event, this);
+				tmpThis.ToDoScrollToSearch(event, this, tmpThis.table_search_type);
+			});
+			
+			DivClassByFreq.find("li").on("click", function(){
+				var _change_value = $(this).attr("value");
+				var _body = $(this).parent().parent().find(".search-type").first();
+				_body.html(_change_value);
+				_body.attr("value", _change_value);
+				
+				tmpThis.table_search_type = _change_value;
 			});
 		}
 
@@ -83,7 +106,7 @@ function buildTable(tabledata, target, callback)
 			  }, 0);
 			});
 
-			setTimeout(this.tbody(tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
+			setTimeout(This.tbody(This, tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
 
 		  }.call(this) ,0);
 
@@ -105,21 +128,19 @@ buildTable.prototype.getMaxLength = function(thead, tbodys, fieldIndex)
 };
 /*一列一列畫*/
 //stick 相關是用來做效果的
-buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
+buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, callback)
 {
-  var tmpThis = this,
-    body = target,  //記錄下來以免多次查詢，用一點記憶體換時間
-    arrayTable={};  //儲存所有已建好的資料<tr><td>data</td><tr>，和原本的值方便後續動作
-	arrayTable.Html = [];
-	arrayTable.value = [];
+  var body = target;  //記錄下來以免多次查詢，用一點記憶體換時間
+	this.arrayTable={};  //儲存所有已建好的資料<tr><td>data</td><tr>，和原本的值方便後續動作
+	this.arrayTable.Html = [];
 
   target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
   /*建立scroller事件*/
-  this.scrollerSet(body, header.parent(), target, arrayTable);
+  tmpThis.scrollerSet(body, header.parent(), target, tmpThis.arrayTable);
   
   /*建立額外事件*/
-  if(typeof callback == "function") setTimeout(callback(header.parent(), arrayTable), 0);
+  if(typeof callback == "function") setTimeout(callback(header.parent(), tmpThis.arrayTable), 0);
   
   var j = 0,
    Loop = data.length,
@@ -144,8 +165,7 @@ buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
          {
            return;
          }
-		 arrayTable.value.push(data[j]);
-         arrayTable.Html.push('<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">' + tmpTr + '</tr>');
+         tmpThis.arrayTable.Html.push('<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">' + tmpTr + '</tr>');
        }
 
        if (requestAnimationFrame) {
@@ -157,16 +177,17 @@ buildTable.prototype.tbody = function(data, target, header, tdLenArr, callback)
      else
      {
        /*初始化內容*/
-       if(target.html()=="")
-       {
-         var tmpHTML = "";
-         for(var i=0 ; i < 40 && i < arrayTable.Html.length;i++)
-         {
-           tmpHTML+=arrayTable.Html[i];
-         }
-         target.html(tmpHTML);
-       }
-     }
+       	if(target.html()=="")
+		{
+		  tmpThis.scrollToSearch_init();
+		  var tmpHTML = "";
+		  for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
+		  {
+			tmpHTML+=tmpThis.arrayTable.Html[i];
+		  }
+		  target.html(tmpHTML);
+		}
+	  }
    }
   requestAnimationFrame ? requestAnimationFrame(doRequestFrame) : doRequestFrame();
 }
@@ -226,71 +247,134 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 }
 
 /************************ search bar 會自動跳到指定td *************************/
-buildTable.prototype.ToDoScrollToSearch = function(event, tmpThis)
+buildTable.prototype.scrollToSearch_init = function()
 {
-  if(event.keyCode == 13){
-       this.scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode)
+	var tmpThis = this;
+	this.scrollToSearch_Type_arr = [];
+	
+	if(tmpThis.arrayTable.lastHtml == undefined)
+		tmpThis.arrayTable.lastHtml = tmpThis.arrayTable.Html;
+	
+	this.scrollToSearch_Type_arr["init"] = function(target)
+	{
+		target = $(target).find(".buildTable_tbody_scollerY").first();
+		tmpThis.arrayTable.Html = tmpThis.arrayTable.lastHtml;
+		target.html("");
+		var tmpHTML = "";
+		for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
+		{
+			tmpHTML+=tmpThis.arrayTable.Html[i];
+		}
+		target.html(tmpHTML);
+		
+		target.parent().css("height", tmpThis.arrayTable.Html.length*40);
+
+		target.parent().parent().scrollTop(0);
+		target.parent().parent().scrollLeft(0);	
+	}
+	
+	this.scrollToSearch_Type_arr["Field"] = function(str, target, searchType)
+	{
+	  tmpThis.scrollToSearch_Type_arr["init"](target);
+	  
+	  var divs = target.getElementsByClassName("columnName");
+	  		/*全部換回黑色*/
+	  if(str.length == 0)
+	  {
+		for (var i = 0; i < divs.length; i++)
+		{
+			$(divs[i].getElementsByTagName("div")).css("color","");
+		}
+		return;
+	  }
+
+	  /*代表換搜尋主題了*/
+	  if(target.str != str)
+	  {
+		target.index = -1;
+		target.str = str;
+
+		for (var i = 0; i < divs.length; i++) {
+		  if(divs[i].getElementsByTagName("div")[0].innerText.toLowerCase().includes(str.toLowerCase()))
+		  {
+			  $(divs[i].getElementsByTagName("div")).css("color","Orange");
+		  }
+		  else
+		  {
+			$(divs[i].getElementsByTagName("div")).css("color","");
+		  }
+		}
+	  }
+
+	  var lastSelect = target.index;
+	  if(lastSelect >= 0)
+	  {
+		  //找到新的就註銷舊的
+		  $(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
+	  }
+	  for (var i = target.index+1; i < divs.length; i++) {
+		  var para = divs[i].getElementsByTagName("div");
+		  var index = para[0].innerText.toLowerCase().indexOf(str.toLowerCase());
+		  if (index != -1) {
+			//para[0].scrollIntoView();
+			
+			$(para[0]).css("color","red");
+
+			$(target.childNodes[1].childNodes[1])[0].scrollLeft = $(para[0]).position().left;
+			target.index = i;
+			return;
+		  }
+	  }
+
+	  //如果找不到就傳出alert，否則視為循環查詢
+	  if(target.index < 0)
+		alert("找不到符合要求的欄位");
+	  else
+	  {
+		target.index = -1;
+		$(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
+		tmpThis.scrollToSearch(str, target, searchType);
+	  }	  
+	}
+	
+	this.scrollToSearch_Type_arr["Filter"] = function(str, target, searchType)
+	{
+		tmpThis.scrollToSearch_Type_arr["init"](target);
+		
+		var target = $(target).find(".buildTable_tbody_scollerY").first();
+		
+		tmpThis.arrayTable.Html = [];
+		tmpThis.arrayTable.lastHtml.forEach(function(x)
+		{
+			if(x.replace(/<[^>]+>||<\/[^>]+>||<[^>]+\/>/ig, "").toLowerCase().includes(str.toLowerCase()))
+			{
+				tmpThis.arrayTable.Html.push(x);
+			}
+		});
+		
+		target.html("");
+		var tmpHTML = "";
+		for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
+		{
+			tmpHTML+=tmpThis.arrayTable.Html[i];
+		}
+		target.html(tmpHTML);
+		
+		target.parent().css("height", tmpThis.arrayTable.Html.length*40);
+
+		target.parent().parent().scrollTop(0);
+		target.parent().parent().scrollLeft(0);	
+	}
+}
+
+buildTable.prototype.ToDoScrollToSearch = function(event, tmpThis, searchType)
+{
+   if(event.keyCode == 13){	  
+      this.scrollToSearch(tmpThis.parentNode.childNodes[0].value, tmpThis.parentNode.parentNode.parentNode.parentNode, searchType)
    }
 }
 
-buildTable.prototype.scrollToSearch = function(str, target)
+buildTable.prototype.scrollToSearch = function(str, target, searchType)
 {
-  var divs = target.getElementsByClassName("columnName");
-
-  /*代表換搜尋主題了*/
-  if(target.str != str)
-  {
-    target.index = -1;
-    target.str = str;
-
-    /*全部換回黑色*/
-    if(str=="")
-    {
-      for (var i = 0; i < divs.length; i++)
-      {
-          $(divs[i].getElementsByTagName("div")).css("color","");
-      }
-      return;
-    }
-
-    for (var i = 0; i < divs.length; i++) {
-      if(divs[i].getElementsByTagName("div")[0].innerText.toLowerCase().indexOf(str) != -1)
-      {
-          $(divs[i].getElementsByTagName("div")).css("color","Orange");
-      }
-      else
-      {
-        $(divs[i].getElementsByTagName("div")).css("color","");
-      }
-    }
-  }
-
-  var lastSelect = target.index;
-  for (var i = target.index+1; i < divs.length; i++) {
-      var para = divs[i].getElementsByTagName("div");
-      var index = para[0].innerText.toLowerCase().indexOf(str.toLowerCase());
-      if (index != -1) {
-        //para[0].scrollIntoView();
-        $(para[0]).css("color","red");
-        if(lastSelect > 0)
-        {
-          //找到新的就註銷舊的
-          $(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
-        }
-
-        $(target.childNodes[1].childNodes[1])[0].scrollLeft = $(para[0]).position().left;
-        target.index = i;
-        return;
-      }
-  }
-
-  //如果找不到就傳出alert，否則視為循環查詢
-  if(target.index < 0)
-    alert("找不到符合要求的欄位");
-  else
-  {
-    target.index = -1;
-    $(divs[lastSelect].getElementsByTagName("div")).css("color","Orange");
-    this.scrollToSearch(str, target);
-  }
+  this.scrollToSearch_Type_arr[searchType](str, target, searchType);
 }
