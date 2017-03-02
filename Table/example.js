@@ -31,7 +31,7 @@ function buildTable(tabledata, target, callback)
 		DivClassByFreq.html(
 		  `<div><tr>
 				<div style="color:red;">
-				<div style="display:inline;float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
+				<div style="float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
 				<div class="dropdown" style="display:inline;float:right;color:black;">
 				  <button style="height:25px" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
 				  <div style="display:inline;" class="search-type" value="${this.table_search_type}">${this.table_search_type}</div>
@@ -124,7 +124,7 @@ buildTable.prototype.getMaxLength = function(thead, tbodys, fieldIndex)
 	}
 	
 	max = Math.max(max, JSON.stringify(thead).replace(/<[^>]*>||<\/.*>||<.*\/>/ig, "").length);
-	return max*10+20;
+	return max*9+20;
 };
 /*一列一列畫*/
 //stick 相關是用來做效果的
