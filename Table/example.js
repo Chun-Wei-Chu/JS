@@ -20,6 +20,8 @@ function buildTable(tabledata, target, callback)
 {
 	this.tabledata = tabledata;
 	this.target = target;
+	this.arrayTable={};  //儲存所有已建好的資料<tr><td>data</td><tr>，和原本的值方便後續動作
+	this.arrayTable.Html = [];
 	this.table_search_type = "Field";
 	
 	var This = this;
@@ -31,7 +33,7 @@ function buildTable(tabledata, target, callback)
 		DivClassByFreq.html(
 		  `<div><tr>
 				<div style="color:red;">
-				<div style="float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
+				<div style="display:inline;float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
 				<div class="dropdown" style="display:inline;float:right;color:black;">
 				  <button style="height:25px" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
 				  <div style="display:inline;" class="search-type" value="${this.table_search_type}">${this.table_search_type}</div>
@@ -85,6 +87,8 @@ function buildTable(tabledata, target, callback)
 			  tdLenArr.push(field_maxlength);
 			  tdLenArr_total_length+=field_maxlength;
 			}
+			
+			This.arrayTable.tdLenArr = tdLenArr;
 
 			DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px;");
 
@@ -97,14 +101,17 @@ function buildTable(tabledata, target, callback)
 			//加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
 			var tmpMinWidth =Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length + 5);
 			var tmpMinHeight = Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight);
-			window.addEventListener("resize", function() {
+			
+			This.resize = function() {
 			  setTimeout(function(){
 				tmpMinWidth = (DivClassByFreq.parent().width() != null && DivClassByFreq.parent().width() > 0? Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length) : tmpMinWidth);
 				tmpMinHeight = (DivClassByFreq.parent().parent().height() != null ? Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight) : tmpMinHeight)
 				DivClassByFreq.width(tmpMinWidth);
 				DivTbody.height(tmpMinHeight);
 			  }, 0);
-			});
+			};
+			
+			window.addEventListener("resize", This.resize);
 
 			setTimeout(This.tbody(This, tabledata.tbody, DivTbody, tmpTarget, tdLenArr, callback), 0);
 
@@ -112,6 +119,8 @@ function buildTable(tabledata, target, callback)
 
       }.call(this),0);
 }
+
+buildTable.prototype.resize;
 
 buildTable.prototype.elem;
 
@@ -124,17 +133,15 @@ buildTable.prototype.getMaxLength = function(thead, tbodys, fieldIndex)
 	}
 	
 	max = Math.max(max, JSON.stringify(thead).replace(/<[^>]*>||<\/.*>||<.*\/>/ig, "").length);
-	return max*9+20;
+	return max*10+20;
 };
 /*一列一列畫*/
 //stick 相關是用來做效果的
 buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, callback)
 {
   var body = target;  //記錄下來以免多次查詢，用一點記憶體換時間
-	this.arrayTable={};  //儲存所有已建好的資料<tr><td>data</td><tr>，和原本的值方便後續動作
-	this.arrayTable.Html = [];
 
-  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
+  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px;" + "width:" + target.parent().parent().find("tr").first().width() + "px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
   /*建立scroller事件*/
   tmpThis.scrollerSet(body, header.parent(), target, tmpThis.arrayTable);
@@ -165,7 +172,10 @@ buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, c
          {
            return;
          }
-         tmpThis.arrayTable.Html.push('<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">' + tmpTr + '</tr>');
+         tmpThis.arrayTable.Html.push({ 
+			tr: '<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">', 
+			tds:  tmpTr
+		 });
        }
 
        if (requestAnimationFrame) {
@@ -180,16 +190,29 @@ buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, c
        	if(target.html()=="")
 		{
 		  tmpThis.scrollToSearch_init();
-		  var tmpHTML = "";
-		  for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
-		  {
-			tmpHTML+=tmpThis.arrayTable.Html[i];
-		  }
-		  target.html(tmpHTML);
+		  tmpThis.initTable(target);
 		}
 	  }
    }
   requestAnimationFrame ? requestAnimationFrame(doRequestFrame) : doRequestFrame();
+}
+
+buildTable.prototype.initTable = function(target)
+{
+	var tmpHTML = "";
+	for(var i=0 ; i < 40 && i < this.arrayTable.Html.length;i++)
+    {
+	  var tmpTrObj = this.arrayTable.Html[i];
+	  var tmpParentWidth = $(this.target).width() * 5 / 4;
+	  var tmptds = "";
+	  for(var fieldNo = 0, _fieldNo = 0; fieldNo <= tmpParentWidth && _fieldNo < this.arrayTable.tdLenArr.length; fieldNo += this.arrayTable.tdLenArr[_fieldNo], _fieldNo++)
+	  {
+		  tmptds += this.arrayTable.Html[i].tds[_fieldNo];
+ 	  }
+	
+	  tmpHTML+= (tmpTrObj.tr + tmptds+ "</tr>");
+    }
+    target.html(tmpHTML);
 }
 
 /*配置scroller，將全螢幕模式和一般模式的scroller統一管理*/
@@ -204,45 +227,59 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
   {
 	  ScrollTr.parent().parent().scrollTop(last_scollerY);
   }
-  tbody.scroll(function(e) {
 
-    if(last_scollerY!=this.scrollTop)
-    {
+  tbody.scroll(function(e) {  
       if(!this.last_start)this.last_start = 0;
-      var tmpArray = ScrollTr.html().split("</tr>");
-      var tmpArray = ScrollTr.html().split("</tr>");
-      for(var i = this.last_start, j = 0; i < this.last_start+20 && i < arrayTable.Html.length; i++, j++)
-      {	    
-        if(tmpArray[j].indexOf('stick="1"')!=-1 || (arrayTable.Html[i].indexOf('stick="1"')!=-1 && tmpArray[j].indexOf('stick="0"')!=-1))
-          arrayTable.Html[i] = tmpArray[j] + "</tr>";
-      }
-
-	  var tmpHTML = "";
-      var start = Math.floor(this.scrollTop/40);
-	  
-      ScrollTr.css({
-        top: (start*40) + 'px'
-      });
-	  
-      for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
-      {
-        tmpHTML+=arrayTable.Html[i];
-      }
-      ScrollTr.html(tmpHTML);
-
-      /*重置*/
-      last_scollerY = this.scrollTop;
-      this.last_start = start;
-    }
-
-    if(last_scollerX!=this.scrollLeft)
-    {
-      thead.css({
+	  thead.css({
           left: -this.scrollLeft + 'px'
       });
 
-      last_scollerX = this.scrollLeft;
-    }
+	  setTimeout(function(){
+		  var m_postionX = this.scrollLeft;
+		  var tmpHTML = "";
+
+		  var start = Math.floor(this.scrollTop/40);
+		  var _postion_X_start = 0;
+		  var _x_idx_start = 0;
+		  var _x_idx_end = 0;
+		  for(; _x_idx_start < arrayTable.tdLenArr.length; _x_idx_start++)
+		  {
+			  if(_postion_X_start => this.scrollLeft)
+			  {
+				  break;
+			  }
+			  _postion_X_start += arrayTable.tdLenArr[_x_idx_start];
+		  }
+		  var _maxWidth = this.scrollLeft + ScrollTr.parent().parent().width();
+		  var _postion_X_start_tmp = _postion_X_start;
+		  for(var j = _x_idx_start; _postion_X_start_tmp <= _maxWidth && j < arrayTable.tdLenArr.length; j++)
+		  {
+			 _postion_X_start_tmp += arrayTable.tdLenArr[j];
+			 _x_idx_end = j;
+		  }
+		  //arrayTable.tdLenArr
+		  ScrollTr.css({
+			top: (start*40) + 'px',
+			left: _postion_X_start + 'px'
+		  });
+
+		  for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
+		  {
+			var tmpTrObj = arrayTable.Html[i];
+			var tmpTd = "";
+			for(var j = _x_idx_start; j <=  _x_idx_end; j++)
+			{
+				tmpTd += tmpTrObj.tds[j];
+			}
+			tmpHTML+= (tmpTrObj.tr + tmpTd + "</tr>");
+		  }
+		  ScrollTr.html(tmpHTML);
+
+		  /*重置*/
+		  last_scollerX = this.scrollLeft;  
+		  last_scollerY = this.scrollTop;
+		  this.last_start = start;
+	  }.call(this), 0);
   });
 }
 
@@ -260,12 +297,7 @@ buildTable.prototype.scrollToSearch_init = function()
 		target = $(target).find(".buildTable_tbody_scollerY").first();
 		tmpThis.arrayTable.Html = tmpThis.arrayTable.lastHtml;
 		target.html("");
-		var tmpHTML = "";
-		for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
-		{
-			tmpHTML+=tmpThis.arrayTable.Html[i];
-		}
-		target.html(tmpHTML);
+		tmpThis.initTable(target);
 		
 		target.parent().css("height", tmpThis.arrayTable.Html.length*40);
 
@@ -346,17 +378,22 @@ buildTable.prototype.scrollToSearch_init = function()
 		tmpThis.arrayTable.Html = [];
 		tmpThis.arrayTable.lastHtml.forEach(function(x)
 		{
-			if(x.replace(/<[^>]+>||<\/[^>]+>||<[^>]+\/>/ig, "").toLowerCase().includes(str.toLowerCase()))
+			for(var i = 0; i < x.tds.length; i++)
 			{
-				tmpThis.arrayTable.Html.push(x);
-			}
+				if(x.tds[i].replace(/<[^>]+>||<\/[^>]+>||<[^>]+\/>/ig, "").toLowerCase().includes(str.toLowerCase()))
+				{
+					tmpThis.arrayTable.Html.push(x);
+					break;
+				}
+			}		
 		});
 		
 		target.html("");
 		var tmpHTML = "";
 		for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
 		{
-			tmpHTML+=tmpThis.arrayTable.Html[i];
+			var tmpTrObj = tmpThis.arrayTable.Html[i]
+			tmpHTML += tmpTrObj.tr + tmpTrObj.tds + "</tr>";
 		}
 		target.html(tmpHTML);
 		
