@@ -140,8 +140,12 @@ buildTable.prototype.getMaxLength = function(thead, tbodys, fieldIndex)
 buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, callback)
 {
   var body = target;  //記錄下來以免多次查詢，用一點記憶體換時間
-
-  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px;" + "width:" + target.parent().parent().find("tr").first().width() + "px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
+  var targetWidth = (target.parent().parent().find("tr").first().width() ? target.parent().parent().find("tr").first().width() : function(){
+	  var _widthSum = 0;
+	  tdLenArr.forEach(function(_){_widthSum += _;});
+	  return _widthSum;
+  }());
+  target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px;" + "width:" + targetWidth + "px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
 
   /*建立scroller事件*/
   tmpThis.scrollerSet(body, header.parent(), target, tmpThis.arrayTable);
