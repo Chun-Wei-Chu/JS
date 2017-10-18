@@ -223,17 +223,13 @@ buildTable.prototype.initTable = function(target)
 /*("scroller所在的element(會顯示的畫面)", "table header", "最內層可移動的空間", "資料table格式為[<tr><td>...</td>...</tr>, ..., <tr><td>...</td>...</tr>]的array")*/
 buildTable.prototype.scrollInit;
 buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
-{
-  var last_scollerY = 0,
-    last_scollerX = 0;
-	
+{	
   this.scrollInit = function()
   {
 	  ScrollTr.parent().parent().scrollTop(last_scollerY);
   }
 
   tbody.scroll(function(e) {  
-      if(!this.last_start)this.last_start = 0;
 	  thead.css({
           left: -this.scrollLeft + 'px'
       });
@@ -244,27 +240,37 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 
 		  var start = Math.floor(this.scrollTop/40);
 		  var _postion_X_start = 0;
+		  var _postion_X_start_tmp = 0;
 		  var _x_idx_start = 0;
 		  var _x_idx_end = 0;
 		  for(; _x_idx_start < arrayTable.tdLenArr.length; _x_idx_start++)
 		  {
-			  if(_postion_X_start => this.scrollLeft)
+			  if(_postion_X_start >= this.scrollLeft)
 			  {
+				  _postion_X_start_tmp = _postion_X_start;
+				  _postion_X_start -= this.scrollLeft;
+				  if(_x_idx_start != 0)
+				  {
+					   _x_idx_start--;
+					  _postion_X_start -= arrayTable.tdLenArr[_x_idx_start] + 2;
+				  }
+				      
 				  break;
 			  }
-			  _postion_X_start += arrayTable.tdLenArr[_x_idx_start];
+			  _postion_X_start += arrayTable.tdLenArr[_x_idx_start] + 2;
 		  }
 		  var _maxWidth = this.scrollLeft + ScrollTr.parent().parent().width();
-		  var _postion_X_start_tmp = _postion_X_start;
 		  for(var j = _x_idx_start; _postion_X_start_tmp <= _maxWidth && j < arrayTable.tdLenArr.length; j++)
 		  {
 			 _postion_X_start_tmp += arrayTable.tdLenArr[j];
-			 _x_idx_end = j;
+			 _x_idx_end = j;			 
 		  }
+		  
 		  //arrayTable.tdLenArr
 		  ScrollTr.css({
 			top: (start*40) + 'px',
-			left: _postion_X_start + 'px'
+			left: (_postion_X_start + this.scrollLeft) + 'px',
+			width: ScrollTr.parent().parent().width()
 		  });
 
 		  for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
@@ -279,10 +285,6 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 		  }
 		  ScrollTr.html(tmpHTML);
 
-		  /*重置*/
-		  last_scollerX = this.scrollLeft;  
-		  last_scollerY = this.scrollTop;
-		  this.last_start = start;
 	  }.call(this), 0);
   });
 }
