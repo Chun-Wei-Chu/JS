@@ -28,9 +28,9 @@ function buildTable(tabledata, target, callback)
 	setTimeout(
       function(){
         This.elem = $('<div style="text-align:left;"></div>').appendTo($(target));
-        var DivClassByFreq = This.elem;
+        var buildTable_innerTable = This.elem;
 
-		DivClassByFreq.html(
+		buildTable_innerTable.html(
 		  `<div><tr>
 				<div style="color:red;">
 				<div style="display:inline;float:right;color:black;"><input type="text" size="10"><button class="btn_search">搜尋</button></div></div>
@@ -48,14 +48,14 @@ function buildTable(tabledata, target, callback)
 
 		{
 			var tmpThis = this;
-			DivClassByFreq.find(".btn_search").first().on("click", function(){
+			buildTable_innerTable.find(".btn_search").first().on("click", function(){
 				tmpThis.scrollToSearch(this.parentNode.childNodes[0].value, this.parentNode.parentNode.parentNode.parentNode, tmpThis.table_search_type);
 			});
-			DivClassByFreq.find("input").on("keyup", function(){
+			buildTable_innerTable.find("input").on("keyup", function(){
 				tmpThis.ToDoScrollToSearch(event, this, tmpThis.table_search_type);
 			});
 			
-			DivClassByFreq.find("li").on("click", function(){
+			buildTable_innerTable.find("li").on("click", function(){
 				var _change_value = $(this).attr("value");
 				var _body = $(this).parent().parent().find(".search-type").first();
 				_body.html(_change_value);
@@ -70,11 +70,11 @@ function buildTable(tabledata, target, callback)
 		  function(){
 			var tdLenArr = [];
 			var tdLenArr_total_length=20;
-			DivClassByFreq = $("<div></div>").appendTo(DivClassByFreq)
+			buildTable_innerTable = $("<div></div>").appendTo(buildTable_innerTable)
 			  .attr("class", "buildTable_innerTable");
 
 			var tmpTarget = $("<tr></tr>").appendTo(
-				$("<div></div>").appendTo(DivClassByFreq)
+				$("<div></div>").appendTo(buildTable_innerTable)
 				  .attr("class", "thead")
 				  .attr("style", "display:inline;width:100%;position:relative;")
 			).attr("style", "background:#dee;").attr("stick", 3);
@@ -90,23 +90,23 @@ function buildTable(tabledata, target, callback)
 			
 			This.arrayTable.tdLenArr = tdLenArr;
 
-			DivClassByFreq.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px;");
+			buildTable_innerTable.attr("style", "table-layout: fixed;overflow:hidden;width:"+ Math.min(($(this.target).width()-70),tdLenArr_total_length+5)+"px;");
 
 			tmpTarget.html(tmpTr);
 
 			/*動態調整table邊界 以避免高度過高問題*/
 			var tbodyheight=46*tabledata.tbody.length;
-			DivTbody = $("<div></div>").appendTo(DivClassByFreq).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
+			DivTbody = $("<div></div>").appendTo(buildTable_innerTable).attr("class", "tbody").attr("style", "width:100%;text-align:right;display:block;overflow-y:scroll;height:"+ Math.min(tbodyheight, ($(this.target).height()*5/6)) +"px;");
 			
 			//加入resize事件，僅調整內頁用於置放table的div的寬度`, 以className為buildTable_innerTable搜尋
-			var tmpMinWidth =Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length + 5);
-			var tmpMinHeight = Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight);
+			var tmpMinWidth =Math.min(buildTable_innerTable.parent().width()-70, tdLenArr_total_length + 5);
+			var tmpMinHeight = Math.min(buildTable_innerTable.parent().parent().height()*7/8, tbodyheight);
 			
 			This.resize = function() {
 			  setTimeout(function(){
-				tmpMinWidth = (DivClassByFreq.parent().width() != null && DivClassByFreq.parent().width() > 0? Math.min(DivClassByFreq.parent().width()-70, tdLenArr_total_length) : tmpMinWidth);
-				tmpMinHeight = (DivClassByFreq.parent().parent().height() != null ? Math.min(DivClassByFreq.parent().parent().height()*7/8, tbodyheight) : tmpMinHeight)
-				DivClassByFreq.width(tmpMinWidth);
+				tmpMinWidth = (buildTable_innerTable.parent().width() != null && buildTable_innerTable.parent().width() > 0 ? Math.min(buildTable_innerTable.parent().width()-70, tdLenArr_total_length) : tmpMinWidth);
+				tmpMinHeight = (buildTable_innerTable.parent().parent().height() != null ? Math.min(buildTable_innerTable.parent().parent().height()*7/8, tbodyheight) : tmpMinHeight)
+				buildTable_innerTable.width(tmpMinWidth);
 				DivTbody.height(tmpMinHeight);
 			  }, 0);
 			};
@@ -142,7 +142,7 @@ buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, c
   var body = target;  //記錄下來以免多次查詢，用一點記憶體換時間
   var targetWidth = (target.parent().parent().find("tr").first().width() ? target.parent().parent().find("tr").first().width() : function(){
 	  var _widthSum = 0;
-	  tdLenArr.forEach(function(_){_widthSum += _;});
+	  tdLenArr.forEach(function(_){_widthSum += _ + 2;});
 	  return _widthSum;
   }());
   target = $("<div></div>").appendTo($("<div></div>").appendTo(target).attr("style", "height:"+((data.length)*40)+"px;" + "width:" + targetWidth + "px")).attr("style", "position:relative").attr("class", "buildTable_tbody_scollerY");
@@ -177,7 +177,7 @@ buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, c
            return;
          }
          tmpThis.arrayTable.Html.push({ 
-			tr: '<tr stick="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1);">', 
+			tr: '<tr stickid="'+j+'" stick="0" ismodify="0" onmouseover="if(this.getAttribute(\'stick\')==0)this.style.background=\'#cde\';" onmouseout="if(this.getAttribute(\'stick\')==0)this.style.background=\'\';" onclick="this.setAttribute(\'stick\', this.getAttribute(\'stick\')^1); this.setAttribute(\'ismodify\', 1);">', 
 			tds:  tmpTr
 		 });
        }
@@ -203,20 +203,20 @@ buildTable.prototype.tbody = function(tmpThis, data, target, header, tdLenArr, c
 
 buildTable.prototype.initTable = function(target)
 {
-	var tmpHTML = "";
+	var tmpHTML = [];
 	for(var i=0 ; i < 40 && i < this.arrayTable.Html.length;i++)
     {
 	  var tmpTrObj = this.arrayTable.Html[i];
 	  var tmpParentWidth = $(this.target).width() * 5 / 4;
-	  var tmptds = "";
+	  var tmpTds = [];
 	  for(var fieldNo = 0, _fieldNo = 0; fieldNo <= tmpParentWidth && _fieldNo < this.arrayTable.tdLenArr.length; fieldNo += this.arrayTable.tdLenArr[_fieldNo], _fieldNo++)
 	  {
-		  tmptds += this.arrayTable.Html[i].tds[_fieldNo];
+		  tmpTds.push(this.arrayTable.Html[i].tds[_fieldNo]);
  	  }
 	
-	  tmpHTML+= (tmpTrObj.tr + tmptds+ "</tr>");
+	  tmpHTML.push(tmpTrObj.tr + tmpTds.join([separator = ''])+ "</tr>");
     }
-    target.html(tmpHTML);
+    target.html(tmpHTML.join([separator = '']));
 }
 
 /*配置scroller，將全螢幕模式和一般模式的scroller統一管理*/
@@ -229,6 +229,23 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 	  ScrollTr.parent().parent().scrollTop(last_scollerY);
   }
 
+  ScrollTr.on("click", function(){
+	  ScrollTr.find("tr").each(function(){
+		  _$this = $(this);
+		  if(_$this.attr("ismodify") == "1")
+		  {
+			  if(_$this.attr("stick") == "1")
+			  {
+				  arrayTable.Html[_$this.attr("stickid")].tr = arrayTable.Html[_$this.attr("stickid")].tr.replace(/stick="0"/, `stick="1" style="background: #cde"`);
+			  }
+			  else
+			  {
+				  arrayTable.Html[_$this.attr("stickid")].tr = arrayTable.Html[_$this.attr("stickid")].tr.replace(/stick="1" style="background: #cde"/, `stick="0"`);
+			  }
+			  _$this.attr("ismodify", 0);
+		  }
+	  });
+  });
   tbody.scroll(function(e) {  
 	  thead.css({
           left: -this.scrollLeft + 'px'
@@ -236,7 +253,7 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 
 	  setTimeout(function(){
 		  var m_postionX = this.scrollLeft;
-		  var tmpHTML = "";
+		  var tmpHTML = [];
 
 		  var start = Math.floor(this.scrollTop/40);
 		  var _postion_X_start = 0;
@@ -259,7 +276,7 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 			  }
 			  _postion_X_start += arrayTable.tdLenArr[_x_idx_start] + 2;
 		  }
-		  var _maxWidth = this.scrollLeft + ScrollTr.parent().parent().width();
+		  var _maxWidth = this.scrollLeft + ScrollTr.parent().parent().width() + 200;
 		  for(var j = _x_idx_start; _postion_X_start_tmp <= _maxWidth && j < arrayTable.tdLenArr.length; j++)
 		  {
 			 _postion_X_start_tmp += arrayTable.tdLenArr[j];
@@ -276,14 +293,14 @@ buildTable.prototype.scrollerSet = function(tbody, thead, ScrollTr, arrayTable)
 		  for(var i=start ; i < start+20 && i < arrayTable.Html.length;i++)
 		  {
 			var tmpTrObj = arrayTable.Html[i];
-			var tmpTd = "";
+			var tmpTd = [];
 			for(var j = _x_idx_start; j <=  _x_idx_end; j++)
 			{
-				tmpTd += tmpTrObj.tds[j];
+				tmpTd.push(tmpTrObj.tds[j]);
 			}
-			tmpHTML+= (tmpTrObj.tr + tmpTd + "</tr>");
+			tmpHTML.push(tmpTrObj.tr + tmpTd.join([separator = '']) + "</tr>");
 		  }
-		  ScrollTr.html(tmpHTML);
+		  ScrollTr.html(tmpHTML.join([separator = '']));
 
 	  }.call(this), 0);
   });
@@ -395,13 +412,13 @@ buildTable.prototype.scrollToSearch_init = function()
 		});
 		
 		target.html("");
-		var tmpHTML = "";
+		var tmpHTML = [];
 		for(var i=0 ; i < 40 && i < tmpThis.arrayTable.Html.length;i++)
 		{
 			var tmpTrObj = tmpThis.arrayTable.Html[i]
-			tmpHTML += tmpTrObj.tr + tmpTrObj.tds + "</tr>";
+			tmpHTML.push(tmpTrObj.tr + tmpTrObj.tds + "</tr>");
 		}
-		target.html(tmpHTML);
+		target.html(tmpHTML.join([separator = '']));
 		
 		target.parent().css("height", tmpThis.arrayTable.Html.length*40);
 
