@@ -31,3 +31,6 @@ isObject:
 JQuery selector regex:
   ex:$([value*="someFilter"]) //搜尋"所有"element中value中含有"someFilter"
      $(#id [class="classname"][value*="someFilter"]) //多層 要記住最主要限定範圍和條件之間要加 空格 條件之間用[]隔開且緊聯
+
+eval:
+  可以讓 js 透過傳入的字串及時生成 code，缺點是這樣很不安全
