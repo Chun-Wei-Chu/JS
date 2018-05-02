@@ -44,11 +44,10 @@ function createViewTree(_elem, _obj, expand){
     _body.showSelect = function(_val){
         _body.find(".tree_leaf").each(function(){
             if($(this).html().toUpperCase().includes(_val.toUpperCase())){
-                $(this).css("visibility", "");
-                console.log("test")
+                $(this).show('fast');
             }
             else{
-                $(this).css("visibility", "hidden");
+                $(this).hide('fast');
             }
         });
     }
@@ -60,7 +59,7 @@ function addChileNode(_elem, _obj, expand){
 		let _child_root = $(`<li class="tree_li ${o.child ? "" : "tree_leaf"}"></li>`).appendTo(_elem);
         _child_root.append(`
             <button type="button" class="btn btn-default btn-sm">
-            <span class="glyphicon ${ o.child ? "glyphicon-plus" : "glyphicon-file"}"></span> ${o.title}
+            <span class="glyphicon ${ o.child ? (expand ? "glyphicon-minus" : "glyphicon-plus") : "glyphicon-file"}"></span> ${o.title}
             </button>
             <a class="click_a" href="#">${o.info}</a>`);
         if(isFunction(o.click)){
