@@ -1,0 +1,13 @@
+https://www.w3schools.com/html/html5_webstorage.asp
+
+save:
+  if(!localStorage)
+      return;
+  localStorage.setItem("name", value);
+  
+
+load:
+  if(!localStorage)
+      return;
+  if(localStorage["name"])
+    let getvalue = localStorage["name"];
