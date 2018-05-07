@@ -42,14 +42,17 @@ function createViewTree(_elem, _obj, expand){
         e.stopPropagation();
     });
     _body.showSelect = function(_val){
-        _body.find(".tree_leaf").each(function(){
+        let _Select_List = [];
+        _body.find(".tree_leaf").each(function(){       
             if($(this).html().toUpperCase().includes(_val.toUpperCase())){
                 $(this).show('fast');
+                _Select_List.push($(this));
             }
             else{
                 $(this).hide('fast');
             }
         });
+        return _Select_List;
     }
     return _body;
 }
